@@ -2,14 +2,22 @@ import os
 from dotenv import load_dotenv
 
 class Config:
-    def __init__(self):
+
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(Config, cls).__new__(cls)
+            cls._instance._load_config()
+        return cls._instance
+
+
+    def _load_config(self):
         load_dotenv()
         self.BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        self.DRIVER_PATH = os.getenv('DRIVER_PATH', 'chromedriver')
         self.CREDENTIALS = {
-            'email': os.getenv('GSC_EMAIL'),
-            'password': os.getenv('GSC_PASSWORD')
+            'email': os.getenv('USER'),
+            'password': os.getenv('PASSWORD')
         }
         self.URLS_FILE = os.path.join(self.BASE_DIR, 'urls.txt')
         self.OUTPUT_FILE = os.path.join(self.BASE_DIR, 'gsc_data.xlsx')
-        self.LOG_FILE = os.path.join(self.BASE_DIR, 'gsc_scraper.log')

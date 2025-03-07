@@ -1,5 +1,5 @@
 from urllib.parse import quote
-from settings import Config
+
 
 
 class URLHandler:

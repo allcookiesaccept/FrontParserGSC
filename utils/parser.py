@@ -1,4 +1,4 @@
-# utils/parser.py
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,8 +14,9 @@ class LoginPage:
     __password_field = (By.NAME, 'password')
     __password_next = (By.ID, 'passwordNext')
 
-    def __init__(self, driver):
-        self.driver = driver
+    def __init__(self, browser):
+        self.browser = browser
+        self.driver = browser.
         self.logger = Logger().get_logger()
         self.wait = WebDriverWait(driver, 20)
 
