@@ -15,17 +15,18 @@ class Browser:
         self.options.add_argument(
             "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
         )
+        self.driver = None
 
     def __call__(self):
-        self.driver: webdriver = webdriver.Chrome(self.options)
+        self.driver = webdriver.Chrome(options=self.options)
         self.driver.implicitly_wait(10)
 
     def get_driver(self):
-        if not self.driver:
+        if not hasattr(self, 'driver') or self.driver is None:
             self.__call__()
         return self.driver
 
     def quit(self):
-        if self.driver:
+        if hasattr(self, 'driver') and self.driver:
             self.driver.quit()
             self.driver = None

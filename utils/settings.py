@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
 class Config:
 
@@ -14,7 +15,7 @@ class Config:
 
     def _load_config(self):
         load_dotenv()
-        self.BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        self.BASE_DIR = Path(os.getenv("BASE_DIR", Path(__file__).resolve().parent.parent))
         self.CREDENTIALS = {
             'email': os.getenv('USER'),
             'password': os.getenv('PASSWORD')

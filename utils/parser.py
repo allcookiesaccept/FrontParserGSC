@@ -14,11 +14,10 @@ class LoginPage:
     __password_field = (By.NAME, 'password')
     __password_next = (By.ID, 'passwordNext')
 
-    def __init__(self, browser):
-        self.browser = browser
-        self.driver = browser.
+    def __init__(self, driver):
+        self.driver = driver
         self.logger = Logger().get_logger()
-        self.wait = WebDriverWait(driver, 20)
+        self.wait = WebDriverWait(self.driver, 20)
 
     def open(self):
         self.driver.get(self.URL)
@@ -80,7 +79,6 @@ class PerformanceReportPage:
 
 class GSCPageObjectManager:
     def __init__(self, driver):
-        self.driver = driver
         self.login_page = LoginPage(driver)
         self.report_page = PerformanceReportPage(driver)
 
@@ -92,12 +90,12 @@ class GSCPageObjectManager:
             .submit_login()
         return self
 
-    def parse_url_metrics(self, original_url):
-        gsc_url = URLHandler.generate_gsc_url(original_url)
-        self.report_page.load_report(gsc_url)
+    def parse_url_metrics(self, encoded_url):
+        """Парсит метрики, принимая уже закодированный URL."""
+        self.report_page.load_report(encoded_url)
 
         return {
-            'url': original_url,
+            'url': '',  # Оригинальный URL будет подставлен позже в app.py
             'clicks': self.report_page.get_metric('clicks'),
             'impressions': self.report_page.get_metric('impressions'),
             'ctr': self.report_page.get_metric('ctr'),

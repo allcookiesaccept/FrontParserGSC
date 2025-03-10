@@ -1,5 +1,5 @@
 import pandas as pd
-from settings import Config
+from utils.settings import Config
 
 
 class DataProcessor:
