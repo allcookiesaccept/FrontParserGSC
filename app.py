@@ -18,7 +18,6 @@ class GSCParser:
         self.results = []
 
     def load_urls(self):
-        """Загружает список URL из файла."""
         try:
             with open(self.config.URLS_FILE, 'r', encoding='utf-8') as f:
                 urls = [line.strip() for line in f if line.strip()]
@@ -29,7 +28,6 @@ class GSCParser:
             raise
 
     def save_url_mapping(self, urls):
-        """Сохраняет mapping оригинальных и закодированных URL в JSON."""
         url_mapping = {url: self.url_handler.generate_gsc_url(url) for url in urls}
         try:
             with open('url_mapping.json', 'w', encoding='utf-8') as f:
@@ -41,7 +39,6 @@ class GSCParser:
             raise
 
     def login(self):
-        """Логинится в Google Search Console."""
         if self.manual_login:
             logger.info("Manual login enabled. Please log in within 60 seconds.")
             self.parser.login_page.open()
@@ -55,16 +52,15 @@ class GSCParser:
                 raise
 
     def parse_urls(self, url_mapping):
-        """Парсит данные для каждого URL, используя закодированные URL."""
         for original_url, encoded_url in url_mapping.items():
             try:
-                # Передаем закодированный URL для загрузки страницы
+
                 metrics = self.parser.parse_url_metrics(encoded_url)
-                # Переопределяем URL в результатах на оригинальный
+
                 metrics['url'] = original_url
                 self.results.append(metrics)
                 logger.info(f"Parsed metrics for {original_url}: {metrics}")
-                time.sleep(2)  # Задержка для предотвращения блокировки
+                time.sleep(10)
             except Exception as e:
                 logger.warning(f"Failed to parse {original_url}: {str(e)}")
                 self.results.append({
@@ -77,7 +73,6 @@ class GSCParser:
         return self.results
 
     def run(self):
-        """Запускает весь процесс."""
         try:
             urls = self.load_urls()
             url_mapping = self.save_url_mapping(urls)
@@ -91,5 +86,5 @@ class GSCParser:
             logger.info("Browser closed")
 
 if __name__ == "__main__":
-    parser = GSCParser(manual_login=True)  # Установите True для ручного логина
+    parser = GSCParser(manual_login=True)
     parser.run()

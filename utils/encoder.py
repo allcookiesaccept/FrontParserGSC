@@ -10,7 +10,7 @@ class URLHandler:
     @staticmethod
     def generate_gsc_url(original_url):
         base_url = ("https://search.google.com/search-console/performance/search-analytics?"
-                    "resource_id=https%3A%2F%2Fbetonmobile.ru%2F&"
+                    "resource_id=https%3A%2F%2Fsite.ru%2F&"
                     "metrics=CLICKS%2CIMPRESSIONS%2CCTR%2CPOSITION&"
                     "num_of_days=28&country=rus&page=!")
 
